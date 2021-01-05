@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', 'Inicio de Sesión')
 
 @section('content')
 
@@ -45,7 +46,7 @@
         <!-- /.col -->
       </div>
     </form>
-
+  <br>
     <a href="{{route('register')}}" class="text-center">Registro</a>
 
   </div>
