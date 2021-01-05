@@ -17,8 +17,10 @@ use Illuminate\Http\Request;
 Route::post('register','ApiAuthController@register');
 Route::post('login','ApiAuthController@login');
 
-Route::group(['middleware' => 'auth.jwt'], function () {
 
+Route::group(['middleware' => 'auth.jwt'], function () {
+    Route::post('logout','ApiAuthController@logout');
+    
     Route::get('tasks', 'ApiTaskController@index');
     Route::get('tasks/{id}', 'ApiTaskController@show');
     Route::post('tasks', 'ApiTaskController@store');

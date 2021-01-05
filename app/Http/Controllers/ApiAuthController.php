@@ -49,7 +49,7 @@ public function login(Request $request)
         ]);
 
         try {
-            JWTAuth::invalidate($request->token);
+            JWTAuth::invalidate($request['token']);
 
             return response()->json([
                 'success' => true,

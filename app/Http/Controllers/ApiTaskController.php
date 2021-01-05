@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Task;
 
+
+
 class ApiTaskController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +21,7 @@ class ApiTaskController extends Controller
         return response()->json([
             'success' => true,
             'data' => $tasks
-        ], 500);
+        ], 200);
     }
 
     /**
@@ -39,7 +42,21 @@ class ApiTaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $task = new Task();
+            $task->description = $request['description'];
+            $task->save();
+            return response()->json([
+                'success' => true,
+                'data' => $task
+            ], 201);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => $th
+            ], 500);
+        }
+        
     }
 
     /**
@@ -50,7 +67,19 @@ class ApiTaskController extends Controller
      */
     public function show($id)
     {
-        //
+        $task = Task::find($id);
+        if(!is_null($task)) {
+            return response()->json([
+                'success' => true,
+                'data' => $task
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'La tarea no existe'
+            ], 400);
+        }
+        
     }
 
     /**
@@ -73,7 +102,21 @@ class ApiTaskController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $task = Task::find($id);
+        if(!is_null($task)) {
+            $task->description = $request['description'];
+            $task->status = $request['status'];
+            $task->update();
+            return response()->json([
+                'success' => true,
+                'data' => $task
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'La tarea no existe'
+            ], 400);
+        }
     }
 
     /**
@@ -84,6 +127,18 @@ class ApiTaskController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $task = Task::find($id);
+        if(!is_null($task)) {
+            $task->delete();
+            return response()->json([
+                'success' => true,
+                'message' => 'Tarea eliminada con exito'
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'La tarea no existe'
+            ], 400);
+        }
     }
 }
